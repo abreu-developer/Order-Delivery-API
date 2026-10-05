@@ -4,9 +4,11 @@ class HttpRequest:
         self,
         body: dict = None,
         header: dict = None,
-        params: dict = None
+        path_params: dict = None,
+        query: dict = None
         ) -> None:
 
         self.body= body
         self.header = header
-        self.params = params
+        self.path_params = path_params
+        self.query = query
