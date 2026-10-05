@@ -17,8 +17,15 @@ class TestRegistryOrder:
         http_request = HttpRequest(
             body={
                 "data": {
-                    "product": "Notebook",
-                    "quantity": 2
+                    "name": "João Vitor",
+                    "address": "Rua A",
+                    "cupom": True,
+                    "items": [
+                        {
+                            "item": "Notebook",
+                            "quantidade": 2
+                        }
+                    ]
                 }
             }
         )
@@ -35,7 +42,6 @@ class TestRegistryOrder:
 
         orders_repository.insert_document.assert_called_once()
 
-
     def test_registry_order_with_invalid_body(self):
         # Arrange
         orders_repository = Mock()
@@ -49,11 +55,10 @@ class TestRegistryOrder:
         response = registry_order.registry(http_request)
 
         # Assert
-        assert response.status_code == 400
-        assert "error" in response.body
+        assert response.status_code == 422
+        assert "errors" in response.body
 
         orders_repository.insert_document.assert_not_called()
-
 
     def test_registry_order_insert_document(self):
         # Arrange
@@ -63,8 +68,15 @@ class TestRegistryOrder:
         http_request = HttpRequest(
             body={
                 "data": {
-                    "product": "Mouse",
-                    "quantity": 1
+                    "name": "João Vitor",
+                    "address": "Rua A",
+                    "cupom": False,
+                    "items": [
+                        {
+                            "item": "Mouse",
+                            "quantidade": 1
+                        }
+                    ]
                 }
             }
         )
@@ -77,6 +89,9 @@ class TestRegistryOrder:
 
         new_order = orders_repository.insert_document.call_args[0][0]
 
-        assert new_order["product"] == "Mouse"
-        assert new_order["quantity"] == 1
+        assert new_order["name"] == "João Vitor"
+        assert new_order["address"] == "Rua A"
+        assert new_order["cupom"] is False
+        assert new_order["items"][0]["item"] == "Mouse"
+        assert new_order["items"][0]["quantidade"] == 1
         assert "created_at" in new_order
