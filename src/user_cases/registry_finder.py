@@ -26,6 +26,7 @@ class FindOrder:
         return order
 
     def __format_response(self, order: dict) -> HttpResponse:
+        order["_id"] = str(order["_id"])
         return HttpResponse(
             body={
                 "data": {
