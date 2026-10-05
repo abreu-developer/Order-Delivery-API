@@ -96,3 +96,14 @@ def test_select_by_object_id():
     response = order_repository.select_by_object_id(object_id)
 
     print(response)
+
+@pytest.mark.skip(reason="interage com o banco")
+def test_edit_registry():
+    order_repository = OrderRepository(conn)
+    order_repository.edit_registry()
+
+
+@pytest.mark.skip(reason="interage com o banco")
+def test_edit_registry_increment():
+    order_repository = OrderRepository(conn)
+    order_repository.edit_registry_increment()
