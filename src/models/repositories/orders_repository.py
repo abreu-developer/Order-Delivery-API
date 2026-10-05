@@ -1,6 +1,9 @@
 from bson.objectid import ObjectId
 
-class OrderRepository:
+from .interfaces.orders_repository_interface import OrderRepositoryInterface
+
+
+class OrderRepository(OrderRepositoryInterface):
     def __init__(self, db_connection) -> None:
         self.__collection_name = "orders"
         self.__db_connection = db_connection
